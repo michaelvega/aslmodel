@@ -8,6 +8,9 @@ from cvzone.ClassificationModule import Classifier
 
 def getImg(outputF):
     cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print("Error: Could not open camera.")
+        exit()
     detector = HandDetector(maxHands=1)
 
     offset = 20
@@ -18,7 +21,12 @@ def getImg(outputF):
 
     while cap.isOpened():
         success, img = cap.read()
+        if not success:
+            print("Error: Failed to read frame from camera.")
+            raise "Could not read frame from camera."
         hands, img = detector.findHands(img)
+        if not hands:
+            print("No hands detected.")
         if hands:
             hand = hands[0]
             x, y, w, h = hand['bbox']
@@ -53,7 +61,10 @@ def getImg(outputF):
         key = cv2.waitKey(1)
         if key == ord("s"):
             counter += 1
-            cv2.imwrite(f'{folder}/Image_{time.time()}.jpg', imgWhite)
+            save_success = cv2.imwrite(f'{folder}/Image_{time.time()}.jpg', imgWhite)
+            print(f'{folder}/Image_{time.time()}.jpg')
+            if save_success:
+                print(f'Image saved to {folder}/Image_{time.time()}')
             print(counter)
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
@@ -63,7 +74,10 @@ def getImg(outputF):
 
 
 def testModel(target_letter):
+    print("cupcake")
     cap = cv2.VideoCapture(0)
+
+
     detector = HandDetector(maxHands=1)
     classifier = Classifier("../lib/modelalpha-2/keras_model.h5", "../lib/modelalpha-2/labels.txt")  # MUST CHANGE
 
@@ -75,7 +89,9 @@ def testModel(target_letter):
 
     while cap.isOpened():
         success, img = cap.read()
+
         imgOutput = img.copy()
+
         hands, img = detector.findHands(img)
         if hands:
             hand = hands[0]
@@ -191,10 +207,10 @@ def testSingleFrame():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    target_letter = str(input("Input the Letter you want to practice: "))
-    testModel(target_letter)
+    #target_letter = str(input("Input the Letter you want to practice: "))
+    #testModel(target_letter)
     # testSingleFrame()
-    # folder = str(input("Word for input: ")).strip()
-    # getImg(folder)
+    folder = str(input("Word for input: ")).strip()
+    getImg(folder)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

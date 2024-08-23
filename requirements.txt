@@ -9,7 +9,6 @@ cffi==1.16.0
 charset-normalizer==3.3.2
 click==8.1.7
 contourpy==1.2.0
-cvzone==1.6.1
 cycler==0.12.1
 dnspython==2.6.1
 eventlet==0.35.2
@@ -42,8 +41,6 @@ mediapipe==0.10.9
 ml-dtypes==0.2.0
 numpy==1.26.4
 oauthlib==3.2.2
-opencv-contrib-python==4.9.0.80
-opencv-python==4.9.0.80
 opt-einsum==3.3.0
 packaging==23.2
 pillow==10.2.0
